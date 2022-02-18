@@ -3,10 +3,22 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="robots" content="noindex" />
     <title>Hello Snake</title>
     <meta name="description" content="The best snake game ever. try it out.">
     <meta name="author" content="erwinkulasic">
+    <meta name="keywords" content="snake,game,play,fun,retro" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Hello Snake" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/erwinkulasic/Snake/main/example.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hello-snake.com/" />
+    <meta property=“og:description“ content="The best snake game ever. try it out." />
+
+    <meta name="twitter:title" content="Hello Snake" />
+    <meta name="twitter:description" content="The best snake game ever. try it out." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/erwinkulasic/Snake/main/example.png" />
+    <meta name="twitter:creator" content="@erwinkulasic1" />
 </head>
 
 <body style="text-align: center;">
@@ -51,7 +63,7 @@
                 document.getElementById('info').innerText = `(Score: ${data.score - 4})`;
             }
 
-            if(data.snake.x <= -1 || data.snake.x >= data.size + 1 || data.snake.y <= -1 || data.snake.y >= data.size + 1) {
+            if (data.snake.x <= -1 || data.snake.x >= data.size + 1 || data.snake.y <= -1 || data.snake.y >= data.size + 1) {
                 document.getElementById('root').innerText = " Press ESC to restart the game. "
                 return;
             }
@@ -65,23 +77,15 @@
                 [...Array(data.size)].map((vy, _x) =>
                     data.tails.some(({ x, y }) => (x === _x && y === _y))
                         ? '\u2610'
-                        : (data.food._x === _x && data.food._y === _y)
-                            ? '\u3007'
-                            : '\u2001'
+                        : (data.food._x === _x && data.food._y === _y) ? '\u3007' : '\u2001'
                 ).join('')
             ).join('\n')
         };
 
         setInterval(__renderer, 90);
         document.addEventListener('keydown', ({ keyCode }) => {
-            data.direction = keyCode === 87
-                ? 3 : keyCode === 65
-                    ? 2 : keyCode === 68
-                        ? 1 : keyCode === 83
-                            ? 4 : data.direction
-            
-            if(keyCode === 27)
-                location.reload();
+            data.direction = keyCode === 87 ? 3 : keyCode === 65 ? 2 : keyCode === 68 ? 1 : keyCode === 83 ? 4 : data.direction
+            if (keyCode === 27) location.reload();
         })
     }
 
