@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello Snake</title>
+    <meta name="description" content="The best snake game ever. try it out.">
+    <meta name="author" content="erwinkulasic">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="text-align: center;">
+    <p id="info">(Score: 0)</p>
+    <p>Use WASD keys to control the snake.</p>
+    <p id="root" style="border-style: dotted;max-width: fit-content;margin:auto;letter-spacing: 3px;white-space: pre;">
+    </p>
+</body>
+
+<script>
+    /*
+        erwinkulasic.com
+        2022 we need a new snake psssss...
+    */
+    const __game = () => {
+        let data = {
+            size: 20,
+            food: { _x: 4, _y: 4 },
+            tails: [],
+            direction: 1,
+            snake: { x: 4, y: 4 },
+            score: 4
+        }
+
+        const random = () => Math.floor(Math.random() * (Math.floor(data.size) - Math.ceil(1)) + Math.ceil(1));
+
+        const __renderer = () => {
+            const direction = data.direction;
+
+            if (direction === 1)
+                data.snake.x++;
+            if (direction === 2)
+                data.snake.x--;
+            if (direction === 3)
+                data.snake.y--;
+            if (direction === 4)
+                data.snake.y++;
+
+            if (data.snake.x === data.food._x && data.snake.y === data.food._y) {
+                data.food = { _x: random(), _y: random() }
+                data.score++;
+                document.getElementById('info').innerText = `(Score: ${data.score - 4})`;
+            }
+
+            if(data.snake.x <= -1 || data.snake.x >= data.size + 1 || data.snake.y <= -1 || data.snake.y >= data.size + 1) {
+                document.getElementById('root').innerText = " Press ESC to restart the game. "
+                return;
+            }
+
+            for (let i = 0; i < data.tails.length - 1; i++)
+                data.tails[i] = data.tails[i + 1];
+
+            data.tails[data.score - 1] = { x: data.snake.x, y: data.snake.y };
+
+            document.getElementById('root').innerText = [...Array(data.size)].map((vx, _y) =>
+                [...Array(data.size)].map((vy, _x) =>
+                    data.tails.some(({ x, y }) => (x === _x && y === _y))
+                        ? '\u2610'
+                        : (data.food._x === _x && data.food._y === _y)
+                            ? '\u3007'
+                            : '\u2001'
+                ).join('')
+            ).join('\n')
+        };
+
+        setInterval(__renderer, 90);
+        document.addEventListener('keydown', ({ keyCode }) => {
+            data.direction = keyCode === 87
+                ? 3 : keyCode === 65
+                    ? 2 : keyCode === 68
+                        ? 1 : keyCode === 83
+                            ? 4 : data.direction
+            
+            if(keyCode === 27)
+                location.reload();
+        })
+    }
+
+    __game();
+
+</script>
+
+</html>
