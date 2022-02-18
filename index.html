@@ -3,28 +3,35 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="robots" content="noindex" />
-    <title>Hello Snake</title>
-    <meta name="description" content="The best snake game ever. try it out.">
+    <meta name="theme-color" content="#000000">
+
+    <title>Hello Snake - Play it now</title>
+    <meta name="title" content="Hello Snake - Play it now">
+    <meta name="description" content="Hello Snake is free retro game online. try it out.">
     <meta name="author" content="erwinkulasic">
-    <meta name="keywords" content="snake,game,play,fun,retro" />
+    <meta name="keywords" content="snake,game,play,fun,retro,Try it today,Try it today,Don’t wait,Check this out" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="Hello Snake" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/erwinkulasic/Snake/main/example.png" />
+
+    <meta property="og:title" content="Hello Snake - Play it now" />
+    <meta property="og:site_name" content="Hello snake" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/erwinkulasic/Snake/main/showcase.png" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hello-snake.com/" />
-    <meta property="og:description" content="The best snake game ever. try it out." />
+    <meta property="og:description" content="Hello Snake is free retro game online. try it out." />
 
-    <meta name="twitter:title" content="Hello Snake" />
-    <meta name="twitter:description" content="The best snake game ever. try it out." />
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/erwinkulasic/Snake/main/example.png" />
+    <meta property="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hello Snake - Play it now" />
+    <meta name="twitter:description" content="Hello Snake is free retro game online. try it out." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/erwinkulasic/Snake/main/showcase.png" />
     <meta name="twitter:creator" content="@erwinkulasic1" />
 </head>
 
 <body style="text-align: center;">
-    <p id="info">(Score: 0)</p>
+    <h1>Hello Snake</h1>
+    <h3 id="info">Score: 0</h3>
     <p>Use WASD keys to control the snake.</p>
-    <p id="root" style="border-style: dotted;max-width: fit-content;margin:auto;letter-spacing: 3px;white-space: pre;">
+    <p id="root" style="border-style: dashed;border-width: 1px;max-width: fit-content;margin:auto;letter-spacing: 3px;white-space: pre;padding: 1px;">
     </p>
 </body>
 
@@ -40,7 +47,7 @@
             tails: [],
             direction: 1,
             snake: { x: 4, y: 4 },
-            score: 4
+            score: 4,
         }
 
         const random = () => Math.floor(Math.random() * (Math.floor(data.size) - Math.ceil(1)) + Math.ceil(1));
@@ -60,7 +67,7 @@
             if (data.snake.x === data.food._x && data.snake.y === data.food._y) {
                 data.food = { _x: random(), _y: random() }
                 data.score++;
-                document.getElementById('info').innerText = `(Score: ${data.score - 4})`;
+                document.getElementById('info').innerText = `Score: ${data.score - 4}`;
             }
 
             if (data.snake.x <= -1 || data.snake.x >= data.size + 1 || data.snake.y <= -1 || data.snake.y >= data.size + 1) {
@@ -77,15 +84,25 @@
                 [...Array(data.size)].map((vy, _x) =>
                     data.tails.some(({ x, y }) => (x === _x && y === _y))
                         ? '\u2610'
-                        : (data.food._x === _x && data.food._y === _y) ? '\u3007' : '\u2001'
+                        : (data.food._x === _x && data.food._y === _y)
+                            ? '\u3007'
+                            : '\u2001'
                 ).join('')
             ).join('\n')
         };
 
-        setInterval(__renderer, 90);
+        setInterval(__renderer, 110);
         document.addEventListener('keydown', ({ keyCode }) => {
-            data.direction = keyCode === 87 ? 3 : keyCode === 65 ? 2 : keyCode === 68 ? 1 : keyCode === 83 ? 4 : data.direction
-            if (keyCode === 27) location.reload();
+            const dir = data.direction;
+
+            if(keyCode === 27) location.reload();
+
+            data.direction = 
+                (keyCode === 87 && dir !== 4) 
+                ? 3 : keyCode === 65 && dir !== 1
+                ? 2 : keyCode === 68 && dir !== 2
+                ? 1 : keyCode === 83 && dir !== 3
+                ? 4 : data.direction
         })
     }
 

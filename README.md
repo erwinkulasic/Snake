@@ -3,11 +3,8 @@
 
 Simply the old known snake game.
 
+Try it out [Hello Snake](https://hello-snake.com)
 <br>
 
-<img alt="snake" src="https://raw.githubusercontent.com/erwinkulasic/Snake/main/example.png"/>
-
+<img alt="snake" src="https://raw.githubusercontent.com/erwinkulasic/Snake/main/showcase.png" />
 <br>
-Why I have published this project? quite simply it enjoys me!
-
-Play [Hello Snake](https://hello-snake.com)

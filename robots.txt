@@ -1,0 +1,4 @@
+Sitemap: https://hello-snake.com/sitemap.xml
+
+User-agent: *
+allow: /
