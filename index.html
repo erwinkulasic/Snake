@@ -7,9 +7,10 @@
 
     <title>Hello Snake - Play it now</title>
     <meta name="title" content="Hello Snake - Play it now">
-    <meta name="description" content="Hello Snake is free retro game online. try it out.">
+    <meta name="description" content="Hello Snake is a free online game. try it out.">
     <meta name="author" content="erwinkulasic">
-    <meta name="keywords" content="snake,game,play,fun,retro,Try it today,Try it today,Don’t wait,Check this out" />
+    <meta name="keywords"
+        content="snake,game,play,fun,retro,Try it today,Try it today,Don't wait,Check this out,free,best" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta property="og:title" content="Hello Snake - Play it now" />
@@ -27,87 +28,190 @@
     <meta name="twitter:creator" content="@erwinkulasic1" />
 </head>
 
-<body style="text-align: center;">
+<body
+    style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;display: flex;justify-content: center;flex-direction: column;background-color: black; color: gray;">
     <h1>Hello Snake</h1>
-    <h3 id="info">Score: 0</h3>
-    <p>Use WASD keys to control the snake.</p>
-    <p id="root" style="border-style: dashed;border-width: 1px;max-width: fit-content;margin:auto;letter-spacing: 3px;white-space: pre;padding: 1px;">
-    </p>
+
+    <p id="info">Score: 0</p>
+
+    <canvas id="root" style="border-style: dashed;border-width: 2px;border-radius: 33px;margin:auto;"
+        width="400" height="400">
+    </canvas>
 </body>
 
 <script>
-    /*
-        erwinkulasic.com
-        2022 we need a new snake psssss...
-    */
-    const __game = () => {
+    const Game = function () {
+        let canvas = document.getElementById("root");
+        let info = document.getElementById('info');
+        let context = canvas.getContext("2d");
+
         let data = {
-            size: 20,
-            food: { _x: 4, _y: 4 },
-            tails: [],
-            direction: 1,
-            snake: { x: 4, y: 4 },
             score: 4,
+            snake: {
+                tails: [],
+                direction: 1,
+                position: { x: 4, y: 4 },
+                size: 20,
+                isAlive: true
+            },
+            food: {
+                position: { x: 4, y: 4 },
+            },
+            map: {
+                size: 400
+            }
         }
 
-        const random = () => Math.floor(Math.random() * (Math.floor(data.size) - Math.ceil(1)) + Math.ceil(1));
-
-        const __renderer = () => {
-            const direction = data.direction;
-
-            if (direction === 1)
-                data.snake.x++;
-            if (direction === 2)
-                data.snake.x--;
-            if (direction === 3)
-                data.snake.y--;
-            if (direction === 4)
-                data.snake.y++;
-
-            if (data.snake.x === data.food._x && data.snake.y === data.food._y) {
-                data.food = { _x: random(), _y: random() }
+        const getRandomPosition = () => {
+            return {
+                x: Math.floor(Math.random() * 20),
+                y: Math.floor(Math.random() * 20)
+            }
+        }
+        
+        const relocateFood = () => {
+            if (
+                data.snake.position.x === data.food.position.x &&
+                data.snake.position.y === data.food.position.y
+            ) {
+                data.food.position = getRandomPosition();
+                console.log(data.food.position)
                 data.score++;
-                document.getElementById('info').innerText = `Score: ${data.score - 4}`;
+                info.innerText = `Score: ${data.score - 4}`;
+            }
+        }
+
+        const snakeBoundary = () => {
+            if(
+                data.snake.position.x < 0 
+                || data.snake.position.x > 19
+                || data.snake.position.y < 0
+                || data.snake.position.y > 19
+            ) {
+                data.snake.isAlive = false;
+            }
+        }
+
+        const movementSnake = (direction) => direction === 1 ? data.snake.position.x++
+            : direction === 2 ? data.snake.position.x--
+            : direction === 3 ? data.snake.position.y--
+            : data.snake.position.y++
+
+        const relocatedTails = () => {
+            for (let i = 0; i < data.snake.tails.length - 1; i++) {
+                data.snake.tails[i] = data.snake.tails[i + 1];
             }
 
-            if (data.snake.x <= -1 || data.snake.x >= data.size + 1 || data.snake.y <= -1 || data.snake.y >= data.size + 1) {
-                document.getElementById('root').innerText = " Press ESC to restart the game. "
+            data.snake.tails[data.score - 1] = { x: data.snake.position.x, y: data.snake.position.y };
+        }
+
+        const visualization = () => {
+            if (data.snake.tails.length < 0) {
                 return;
             }
 
-            for (let i = 0; i < data.tails.length - 1; i++)
-                data.tails[i] = data.tails[i + 1];
+            for (let i = 0; i < data.snake.tails.length; i++) {
+                const tail = data.snake.tails[i];
+                if (tail === undefined) {
+                    return;
+                }
 
-            data.tails[data.score - 1] = { x: data.snake.x, y: data.snake.y };
+                context.fillStyle = "white";
+                context.fillRect(tail.x * data.snake.size, tail.y * data.snake.size, data.snake.size, data.snake.size);
+            }
 
-            document.getElementById('root').innerText = [...Array(data.size)].map((vx, _y) =>
-                [...Array(data.size)].map((vy, _x) =>
-                    data.tails.some(({ x, y }) => (x === _x && y === _y))
-                        ? '\u2610'
-                        : (data.food._x === _x && data.food._y === _y)
-                            ? '\u3007'
-                            : '\u2001'
-                ).join('')
-            ).join('\n')
-        };
+            context.fillStyle = "#333333";
+            context.fillRect(data.food.position.x * data.snake.size, data.food.position.y * data.snake.size, data.snake.size, data.snake.size);
+        }
 
-        setInterval(__renderer, 110);
+        const gameOver = () => {
+            context.fillStyle = "gray";
+            context.font = "20px Verdana";
+            context.textBaseline = "middle";
+            context.textAlign = "center";
+            context.fillText("Press ESC to restart the game.", data.map.size / 2, data.map.size / 2);
+
+            context.fillStyle = "#333333";
+            context.font = "15px Verdana";
+            context.fillText("Use W A S D keys to control the snake.", data.map.size / 2, (data.map.size / 2) - 30);
+        }
+
+        const onUpdate = function () {
+            context.clearRect(0, 0, data.map.size, data.map.size);
+
+            if(data.snake.isAlive) {
+                movementSnake(data.snake.direction);
+                snakeBoundary();
+                relocateFood();
+                relocatedTails();
+                visualization();
+            } else {
+                gameOver();
+            }
+        }
+
         document.addEventListener('keydown', ({ keyCode }) => {
-            const dir = data.direction;
+            if (keyCode === 27) {
+                window.location.reload();
+            }
 
-            if(keyCode === 27) location.reload();
+            if (keyCode === 68 && data.snake.direction !== 2) { //RIGHT
+                data.snake.direction = 1;
+            }
+            if (keyCode === 87 && data.snake.direction !== 4) { //UP
+                data.snake.direction = 3;
+            }
+            if (keyCode === 65 && data.snake.direction !== 1) { //LEFT
+                data.snake.direction = 2;
+            }
+            if (keyCode === 83 && data.snake.direction !== 3) { //DOWN
+                data.snake.direction = 4;
+            }
+        });
 
-            data.direction = 
-                (keyCode === 87 && dir !== 4) 
-                ? 3 : keyCode === 65 && dir !== 1
-                ? 2 : keyCode === 68 && dir !== 2
-                ? 1 : keyCode === 83 && dir !== 3
-                ? 4 : data.direction
-        })
+        let touchPosition = {
+            xDown: 0,
+            yDown: 0
+        }
+
+        document.addEventListener('touchmove', ({ touches }) => {
+
+            const x = touches[0].clientX;
+            const y = touches[0].clientY;
+
+            var xDiff = touchPosition.xDown - x;
+            var yDiff = touchPosition.yDown - y;
+
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff > 0 && data.snake.direction !== 2) {
+                    data.snake.direction = 1;
+                } else if (xDiff < 0 && data.snake.direction !== 1) {
+                    data.snake.direction = 2;
+                }
+            } else {
+                if (yDiff > 0 && data.snake.direction !== 4) {
+                    data.snake.direction = 3;
+                } else if (yDiff < 0 && data.snake.direction !== 3) {
+                    data.snake.direction = 4;
+                }
+            }
+        }, false);
+
+        document.addEventListener('touchstart', ({ touches }) => {
+            const x = touches[0].clientX;
+            const y = touches[0].clientY;
+
+            touchPosition.xDown = x;
+            touchPosition.yDown = y;
+            
+        }, false);
+
+        window.focus();
+
+        setInterval(onUpdate, 1000 / 10)
     }
 
-    __game();
-
+    Game();
 </script>
 
 </html>
