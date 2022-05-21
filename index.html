@@ -29,7 +29,7 @@
 </head>
 
 <body
-    style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;display: flex;justify-content: center;flex-direction: column;background-color: black; color: gray;">
+    style="overflow:hidden; text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;display: flex;justify-content: center;flex-direction: column;background-color: black; color: gray;">
     <h1>Hello Snake</h1>
 
     <p id="info">Score: 0</p>
@@ -183,10 +183,10 @@
             var yDiff = touchPosition.yDown - y;
 
             if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                if (xDiff > 0 && data.snake.direction !== 2) {
-                    data.snake.direction = 1;
-                } else if (xDiff < 0 && data.snake.direction !== 1) {
+                if (xDiff > 0 && data.snake.direction !== 1) {
                     data.snake.direction = 2;
+                } else if (xDiff < 0 && data.snake.direction !== 2) {
+                    data.snake.direction = 1;
                 }
             } else {
                 if (yDiff > 0 && data.snake.direction !== 4) {
@@ -207,6 +207,12 @@
         }, false);
 
         window.focus();
+
+        if(window.innerWidth < 400) {
+            canvas.width  = 350;
+            canvas.height = 350;
+            data.map.size = 350;
+        }
 
         setInterval(onUpdate, 1000 / 10)
     }
