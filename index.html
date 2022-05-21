@@ -63,8 +63,8 @@
 
         const getRandomPosition = () => {
             return {
-                x: Math.floor(Math.random() * 20),
-                y: Math.floor(Math.random() * 20)
+                x: Math.floor(Math.random() * data.map.range),
+                y: Math.floor(Math.random() * data.map.range)
             }
         }
         
@@ -211,8 +211,8 @@
             canvas.width  = 350;
             canvas.height = 350;
             data.map.size = 350;
-            data.snake.size = 20;
-            data.snake.range= 19;
+            data.snake.size = 18;
+            data.snake.range= 18;
         }
 
         setInterval(onUpdate, 1000 / 10)
