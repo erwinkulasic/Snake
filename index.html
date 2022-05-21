@@ -58,7 +58,8 @@
                 position: { x: 4, y: 4 },
             },
             map: {
-                size: 400
+                size: 400,
+                range: 19
             }
         }
 
@@ -84,9 +85,9 @@
         const snakeBoundary = () => {
             if(
                 data.snake.position.x < 0 
-                || data.snake.position.x > data.snake.size - 1
+                || data.snake.position.x > data.map.range
                 || data.snake.position.y < 0
-                || data.snake.position.y > data.snake.size - 1
+                || data.snake.position.y > data.map.range
             ) {
                 data.snake.isAlive = false;
             }
@@ -213,6 +214,7 @@
             canvas.height = 350;
             data.map.size = 350;
             data.snake.size = 15;
+            data.snake.size = 14;
         }
 
         setInterval(onUpdate, 1000 / 10)
