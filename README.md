@@ -1,7 +1,7 @@
 
 ## Snake
 
-Simply the old known snake game.
+When you are bored just play this game.
 
 Try it out [Hello Snake](https://hello-snake.com)
 <br>
