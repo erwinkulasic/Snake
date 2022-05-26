@@ -1,7 +1,7 @@
 
 ## Snake
 
-When you are bored just play this game.
+The best game to play at any time! Your opportunity!
 
 Try it out [Hello Snake](https://hello-snake.com)
 <br>
