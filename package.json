@@ -1,0 +1,23 @@
+{
+	"name": "snake",
+	"version": "1.0.0-staging",
+	"source": "src/index.html",
+	"browserslist": "> 0.5%, last 2 versions, not dead",
+	"scripts": {
+		"start": "parcel ./src/*.html",
+		"build": "parcel build ./src/*.html"
+	},
+	"staticFiles": {
+		"staticPath": "./src/resources"
+	},
+	"devDependencies": {
+		"@parcel/compressor-brotli": "^2.6.0",
+		"@parcel/compressor-gzip": "^2.6.0",
+		"@parcel/optimizer-esbuild": "^2.6.0",
+		"@parcel/packager-raw-url": "^2.6.0",
+		"@parcel/transformer-webmanifest": "^2.6.0",
+		"parcel": "^2.6.0",
+		"parcel-optimizer-add-license": "^0.2.2",
+		"parcel-reporter-static-files-copy": "^1.3.4"
+	}
+}
