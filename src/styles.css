@@ -56,5 +56,10 @@ canvas {
 }
 
 .info-container {
-    padding: 6px;
+    padding: 20px;
+}
+
+.info-header {
+    color: white;
+    margin-bottom: -10px;
 }
